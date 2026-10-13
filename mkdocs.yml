@@ -71,3 +71,4 @@ nav:
   - Webhook: '!include ./aibom-webhook-service/mkdocs.yml'
   - CLI: '!include ./oc-aibom/mkdocs.yml'
   - Console Plugin: '!include ./aibom-console-plugin/mkdocs.yml'
+  - Maintainers: maintainers.md
