@@ -1,7 +1,8 @@
 name: Sync from source repos
 
-# Read-only mirror: the source repos notify this repo (repository_dispatch) when
-# their default branch changes. The schedule is a fallback in case a notification is missed.
+# The project folders are submodules. The source repos notify this repo
+# (repository_dispatch) when their default branch changes; this bumps each
+# submodule to its branch tip. The schedule is a fallback in case a notification is missed.
 on:
   repository_dispatch:
     types: [source-updated]
@@ -22,14 +23,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-      - name: Configure git
+          submodules: true
+      - name: Bump submodules and push
         run: |
+          git submodule update --remote
+          git diff --quiet && { echo "Already up to date"; exit 0; }
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      - name: Install git-filter-repo
-        run: pip install git-filter-repo
-      - name: Sync and push
-        run: |
-          ./sync.sh
+          git commit -am "Bump submodules: $(git diff --name-only | tr '\n' ' ')"
           git push origin HEAD:main

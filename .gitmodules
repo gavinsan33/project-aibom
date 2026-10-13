@@ -1,0 +1,12 @@
+[submodule "aibom-console-plugin"]
+	path = aibom-console-plugin
+	url = https://github.com/gavinsan33/aibom-console-plugin.git
+	branch = main
+[submodule "aibom-webhook-service"]
+	path = aibom-webhook-service
+	url = https://github.com/gavinsan33/aibom-webhook-service.git
+	branch = main
+[submodule "oc-aibom"]
+	path = oc-aibom
+	url = https://github.com/gavinsan33/oc-aibom.git
+	branch = main
