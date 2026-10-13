@@ -1,10 +1,9 @@
 # Combined documentation site for the AIBOM projects.
 #
-# Each project keeps its own docs/ and mkdocs.yml in its source repo; the sync
-# in this repo mirrors them into the folders below and mkdocs-monorepo-plugin
-# stitches them into one site. Edit docs in the source repos, never under the
-# project folders here. Theme, extensions and styling for the whole site live
-# in this file and docs/stylesheets/.
+# Each project keeps its own docs/ and mkdocs.yml in its source repo; the
+# project folders here are submodules of those repos and mkdocs-monorepo-plugin
+# stitches them into one site. Edit docs in the source repos. Theme, extensions
+# and styling for the whole site live in this file and docs/stylesheets/.
 site_name: Project AIBOM
 site_url: https://gavinsan33.github.io/project-aibom/
 repo_url: https://github.com/gavinsan33/project-aibom
