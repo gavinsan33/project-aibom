@@ -34,7 +34,7 @@ concurrency:
 
 jobs:
   build:
-    # A failed sync leaves the mirror unchanged; don't rebuild on top of it.
+    # A failed sync leaves the submodule pointers unchanged; don't rebuild on top of it.
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
