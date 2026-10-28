@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 # RBAC for the aibom developer/deployer account: cluster-scoped roles, plus
-# admin in each of DEVELOPER_NAMESPACES. Run as a user who can impersonate
-# system:admin. The helm field manager lets the aibom-webhook release adopt
-# aibom-webhook and aibom-view without an ownership conflict.
+# admin and monitoring-edit in each of DEVELOPER_NAMESPACES. Run as a user who
+# can impersonate system:admin. The helm field manager lets the aibom-webhook
+# release adopt aibom-webhook and aibom-view without an ownership conflict.
+#
+# Covers helm upgrades of aibom-webhook and aibom-workload-namespace. Not
+# covered (still admin-run): helm uninstall of aibom-webhook (its post-delete
+# finalizer-cleanup hook) and the console plugin's cluster-scoped objects.
 set -euo pipefail
 
 # Must match the aibom-webhook helm release (webhook_namespace in
@@ -25,6 +29,11 @@ rules:
   - apiGroups: ["jobset.x-k8s.io"]
     resources: ["jobsets"]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # Mirror aibom-workload-namespace's aibom-postprocess Role, which
+  # setup-namespace can only create if the developer holds its rules.
+  - apiGroups: ["aibom.io"]
+    resources: ["aiboms"]
+    verbs: ["create"]
   - apiGroups: ["aibom.io"]
     resources: ["aibomtelemetries"]
     verbs: ["create", "patch"]
@@ -66,7 +75,7 @@ rules:
     verbs: ["get", "update", "patch", "delete"]
   - apiGroups: ["apiextensions.k8s.io"]
     resources: ["customresourcedefinitions"]
-    resourceNames: ["aibomtelemetries.aibom.io"]
+    resourceNames: ["aiboms.aibom.io", "aibomtelemetries.aibom.io"]
     verbs: ["get", "update", "patch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -131,6 +140,21 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: admin
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: $DEVELOPER_USER
+---
+# admin doesn't cover PodMonitors (aibom-workload-namespace's vLLM metrics).
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: aibom-developer-monitoring-edit
+  namespace: $ns
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: monitoring-edit
 subjects:
   - apiGroup: rbac.authorization.k8s.io
     kind: User
