@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 # RBAC for the aibom developer/deployer account: cluster-scoped roles, plus
-# admin in each of DEVELOPER_NAMESPACES. Run as a user who can impersonate
-# system:admin. The helm field manager lets the aibom-webhook release adopt
-# aibom-webhook and aibom-view without an ownership conflict.
+# admin and monitoring-edit in each of DEVELOPER_NAMESPACES. Run as a user who
+# can impersonate system:admin. The helm field manager lets the aibom-webhook
+# release adopt aibom-webhook and aibom-view without an ownership conflict.
+#
+# Covers helm upgrades of aibom-webhook and aibom-workload-namespace. Not
+# covered (still admin-run): helm uninstall of aibom-webhook (its post-delete
+# finalizer-cleanup hook) and the console plugin's cluster-scoped objects.
 set -euo pipefail
 
 # Must match the aibom-webhook helm release (webhook_namespace in
@@ -25,6 +29,11 @@ rules:
   - apiGroups: ["jobset.x-k8s.io"]
     resources: ["jobsets"]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # Mirror aibom-workload-namespace's aibom-postprocess Role, which
+  # setup-namespace can only create if the developer holds its rules.
+  - apiGroups: ["aibom.io"]
+    resources: ["aiboms"]
+    verbs: ["create"]
   - apiGroups: ["aibom.io"]
     resources: ["aibomtelemetries"]
     verbs: ["create", "patch"]
