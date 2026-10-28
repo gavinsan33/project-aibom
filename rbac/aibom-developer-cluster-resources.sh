@@ -8,9 +8,9 @@ set -euo pipefail
 # Must match the aibom-webhook helm release (webhook_namespace in
 # aibom-webhook-service/justfile). Override with the env var of the same name.
 AIBOM_NAMESPACE="${AIBOM_NAMESPACE:-project-aibom}"
-# Workload namespace(s) and the console plugin's namespace (aibom-console-plugin
-# justfile default).
-DEVELOPER_NAMESPACES="${DEVELOPER_NAMESPACES:-project-gavin-test aibom-console-plugin}"
+# The webhook's namespace, workload namespace(s), and the console plugin's
+# namespace (aibom-console-plugin justfile default).
+DEVELOPER_NAMESPACES="${DEVELOPER_NAMESPACES:-$AIBOM_NAMESPACE project-gavin-test aibom-console-plugin}"
 # User bound to aibom-developer-cluster-resources and to admin in
 # DEVELOPER_NAMESPACES. Not $(oc whoami): whoever runs this is the cluster admin.
 DEVELOPER_USER="${DEVELOPER_USER:-gsanders@redhat.com}"
