@@ -135,6 +135,21 @@ subjects:
   - apiGroup: rbac.authorization.k8s.io
     kind: User
     name: $DEVELOPER_USER
+---
+# admin doesn't cover PodMonitors (aibom-workload-namespace's vLLM metrics).
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: aibom-developer-monitoring-edit
+  namespace: $ns
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: monitoring-edit
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: $DEVELOPER_USER
 YAML
 done
 } | oc apply --as=system:admin --server-side --field-manager=helm --force-conflicts -f -
