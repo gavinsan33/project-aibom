@@ -8,9 +8,9 @@ set -euo pipefail
 # Must match the aibom-webhook helm release (webhook_namespace in
 # aibom-webhook-service/justfile). Override with the env var of the same name.
 AIBOM_NAMESPACE="${AIBOM_NAMESPACE:-project-aibom}"
-# Workload namespace(s) and the console plugin's namespace (aibom-console-plugin
-# justfile default).
-DEVELOPER_NAMESPACES="${DEVELOPER_NAMESPACES:-project-gavin-test aibom-console-plugin}"
+# The webhook's namespace, workload namespace(s), and the console plugin's
+# namespace (aibom-console-plugin justfile default).
+DEVELOPER_NAMESPACES="${DEVELOPER_NAMESPACES:-$AIBOM_NAMESPACE project-gavin-test aibom-console-plugin}"
 # User bound to aibom-developer-cluster-resources and to admin in
 # DEVELOPER_NAMESPACES. Not $(oc whoami): whoever runs this is the cluster admin.
 DEVELOPER_USER="${DEVELOPER_USER:-gsanders@redhat.com}"
@@ -31,11 +31,39 @@ rules:
   - apiGroups: ["aibom.io"]
     resources: ["aiboms/finalizers"]
     verbs: ["update"]
-  # Bind (not hold, not edit) the webhook's roles and cluster-monitoring-view.
+  # The aibom-webhook release is server-side applied, so every helm upgrade
+  # patches its cluster-scoped objects. Patching a ClusterRole requires holding
+  # its rules (escalation check): these mirror aibom-webhook, aibom-view and
+  # aibom-postprocess-images.
+  - apiGroups: [""]
+    resources: ["pods", "namespaces"]
+    verbs: ["list", "watch"]
+  - apiGroups: ["batch"]
+    resources: ["jobs"]
+    verbs: ["list", "watch"]
+  - apiGroups: ["aibom.io"]
+    resources: ["aiboms", "aibomtelemetries"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["image.openshift.io"]
+    resources: ["images"]
+    verbs: ["get"]
   - apiGroups: ["rbac.authorization.k8s.io"]
     resources: ["clusterroles"]
-    resourceNames: ["aibom-webhook", "aibom-view", "cluster-monitoring-view"]
+    resourceNames: ["aibom-webhook", "aibom-view", "aibom-postprocess-images"]
+    verbs: ["get", "update", "patch", "delete"]
+  # Patching a ClusterRoleBinding requires bind on the role it references.
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["clusterroles"]
+    resourceNames: ["aibom-webhook", "aibom-view", "aibom-postprocess-images", "cluster-monitoring-view"]
     verbs: ["bind"]
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["clusterrolebindings"]
+    resourceNames: ["aibom-webhook", "aibom-postprocess-images", "aibom-postprocess-monitoring-view"]
+    verbs: ["get", "update", "patch", "delete"]
+  - apiGroups: ["admissionregistration.k8s.io"]
+    resources: ["mutatingwebhookconfigurations"]
+    resourceNames: ["aibom-webhook"]
+    verbs: ["get", "update", "patch", "delete"]
   - apiGroups: ["apiextensions.k8s.io"]
     resources: ["customresourcedefinitions"]
     resourceNames: ["aibomtelemetries.aibom.io"]
