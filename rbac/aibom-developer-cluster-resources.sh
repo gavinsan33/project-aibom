@@ -66,7 +66,7 @@ rules:
     verbs: ["get", "update", "patch", "delete"]
   - apiGroups: ["apiextensions.k8s.io"]
     resources: ["customresourcedefinitions"]
-    resourceNames: ["aibomtelemetries.aibom.io"]
+    resourceNames: ["aiboms.aibom.io", "aibomtelemetries.aibom.io"]
     verbs: ["get", "update", "patch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
