@@ -32,6 +32,16 @@ AIBOMs record what was declared and detected; they identify rather than verify. 
 | [**oc-aibom**](https://github.com/gavinsan33/oc-aibom) | `oc aibom`, a `kubectl`/`oc` plugin to list, filter, inspect, diff, and compare AIBOMs, and to verify their signatures. |
 | [**aibom-console-plugin**](https://github.com/gavinsan33/aibom-console-plugin) | An OpenShift web console plugin with list, detail, and compare views and telemetry charts. |
 
+## Cloning
+
+To get all three repos in one checkout:
+
+```sh
+git clone --recurse-submodules https://github.com/gavinsan33/project-aibom.git
+```
+
+If you already cloned without it, run `git submodule update --init`. Each submodule is pinned to the commit last synced here, so to work on one, clone its source repo instead.
+
 ## Where to start
 
 - To learn what the project does and how to install it, read the [documentation site](https://gavinsan33.github.io/project-aibom/).
