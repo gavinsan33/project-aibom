@@ -7,7 +7,7 @@ How this site is built, and what the project depends on outside its repositories
 | Repository | Role |
 |------------|------|
 | [`aibom-webhook-service`](https://github.com/gavinsan33/aibom-webhook-service) | Webhook, watcher, postprocess Job and the two Helm charts |
-| [`oc-aibom`](https://github.com/gavinsan33/oc-aibom) | The `oc aibom` CLI and its krew manifest |
+| [`oc-aibom`](https://github.com/gavinsan33/oc-aibom) | The `oc aibomrun` CLI and its krew manifest |
 | [`aibom-console-plugin`](https://github.com/gavinsan33/aibom-console-plugin) | The OpenShift console plugin and its Helm chart |
 | [`project-aibom`](https://github.com/gavinsan33/project-aibom) | This repo: the three above as submodules, plus the combined docs site |
 
