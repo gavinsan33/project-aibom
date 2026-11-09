@@ -34,7 +34,7 @@ AIBOMs record what was declared and detected; they identify rather than verify. 
 
 ## Related projects
 
-[k8s-aibom](https://github.com/GoogleCloudPlatform/k8s-aibom) is an unprivileged controller that inventories the AI workloads running in a cluster and writes one CycloneDX ML-BOM per serving workload, with evidence and a confidence tier on every attribute. It is the serving-side inventory for people who didn't run the workload; Project AIBOM is the run record for the people who did. The two can be installed on the same cluster: this project's resources are `aiboms.aibom.io` (short name `aibomrun`) and its CLI is `oc aibomrun`, leaving `aibom` and `kubectl aibom` to k8s-aibom.
+See [Related projects](https://gavinsan33.github.io/project-aibom/#related-projects) on the docs site for how this project relates to k8s-aibom and how to run both on one cluster.
 
 ## Cloning
 
