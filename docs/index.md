@@ -1,3 +1,8 @@
+---
+hide:
+  - toc
+---
+
 # Project AIBOM
 
 An AI Bill of Materials (AIBOM) records what went into an AI workload run: the model, the dataset, the source code, the hardware, and how it performed. These projects collect that automatically on OpenShift and let you browse and compare the results.
