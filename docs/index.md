@@ -21,28 +21,16 @@ An AI Bill of Materials (AIBOM) records what went into an AI workload run: the m
 
 ```mermaid
 flowchart LR
-    subgraph whns["Webhook namespace"]
-        webhook["Admission<br/>webhook"]
-        watcher["Watcher"]
-        post["Postprocess<br/>Job"]
-    end
+    workload["Your workload<br/>(Job, JobSet, PyTorchJob, ...)"]
+    webhook["Webhook"]
+    aibom[("AIBOM<br/>custom resource")]
+    cli["CLI<br/>(oc aibomrun)"]
+    console["Console Plugin"]
 
-    subgraph wlns["Workload namespace"]
-        pod["<b>Instrumented pod</b><br/>discovery init container<br/>runtime detector<br/>dataset sidecar"]
-        cm[("Data<br/>ConfigMap")]
-        aibom[("AIBOM +<br/>AIBOMTelemetry")]
-    end
-
-    prom[("Prometheus<br/>+ DCGM")]
-    cli["oc aibomrun"]
-    console["Console plugin"]
-
-    webhook -- "injects" --> pod
-    pod -- "signed" --> cm
-    cm --> watcher
-    watcher --> post
-    prom --> post
-    post -- "signed" --> aibom
+    workload -- "instrumented by" --> webhook
+    webhook -- "compiles on finish" --> aibom
     aibom --> cli
     aibom --> console
 ```
+
+For what the webhook injects and how the AIBOM gets compiled, see [How it works](aibom-webhook-service/index.md#how-it-works) in the webhook docs.
