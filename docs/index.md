@@ -20,39 +20,29 @@ An AI Bill of Materials (AIBOM) records what went into an AI workload run: the m
 3. Read the results with the [CLI](oc-aibom/install.md) or the [console plugin](aibom-console-plugin/guide/deployment.md). Both use your existing Kubernetes RBAC.
 
 ```mermaid
-flowchart TB
-    api["Kubernetes API server"]
-    prom[("Prometheus + DCGM")]
-
+flowchart LR
     subgraph whns["Webhook namespace"]
-        webhook["Admission webhook"]
+        webhook["Admission<br/>webhook"]
         watcher["Watcher"]
-        post["Postprocess Job"]
+        post["Postprocess<br/>Job"]
     end
 
-    subgraph wlns["Workload namespace (aibom.io/enabled=true)"]
-        subgraph pod["Instrumented pod"]
-            disc["aibom-discovery init container"]
-            app["App container + runtime detector"]
-            side["aibom-dataset-sidecar"]
-        end
-        cm[("Data ConfigMap")]
+    subgraph wlns["Workload namespace"]
+        pod["<b>Instrumented pod</b><br/>discovery init container<br/>runtime detector<br/>dataset sidecar"]
+        cm[("Data<br/>ConfigMap")]
+        aibom[("AIBOM +<br/>AIBOMTelemetry")]
     end
 
-    aibom[("AIBOM + AIBOMTelemetry<br/>(workload namespace)")]
-
+    prom[("Prometheus<br/>+ DCGM")]
     cli["oc aibomrun"]
     console["Console plugin"]
 
-    api -- "pod create" --> webhook
     webhook -- "injects" --> pod
-    disc -- "hardware, signed" --> cm
-    app -- "detections" --> side
-    side -- "datasets, signed" --> cm
-    cm -- "read and verify" --> watcher
-    watcher -- "run finished" --> post
-    prom -- "metrics" --> post
-    post -- "signed AIBOM" --> aibom
+    pod -- "signed" --> cm
+    cm --> watcher
+    watcher --> post
+    prom --> post
+    post -- "signed" --> aibom
     aibom --> cli
     aibom --> console
 ```
