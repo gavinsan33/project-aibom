@@ -210,11 +210,3 @@
 .md-tabs__link {
   font-size: 0.85rem;
 }
-
-/* Mermaid scales diagrams to the full content width; cap it so tall
-   diagrams don't render oversized. */
-.md-typeset .mermaid {
-  max-width: 36rem;
-  margin-left: auto;
-  margin-right: auto;
-}
