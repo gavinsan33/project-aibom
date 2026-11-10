@@ -5,7 +5,7 @@ An AI Bill of Materials (AIBOM) records what went into an AI workload run: the m
 | Project | What it does |
 |---------|--------------|
 | [**Webhook**](aibom-webhook-service/index.md) | A Kubernetes admission webhook that instruments AI workloads and compiles an `AIBOM` custom resource when each run finishes. This is where AIBOMs come from. |
-| [**CLI**](oc-aibom/index.md) | `oc aibom`, a `kubectl`/`oc` plugin to list, filter, inspect, diff and compare AIBOMs from the terminal. |
+| [**CLI**](oc-aibom/index.md) | `oc aibomrun`, a `kubectl`/`oc` plugin to list, filter, inspect, diff and compare AIBOMs from the terminal. |
 | [**Console Plugin**](aibom-console-plugin/index.md) | An OpenShift Console plugin to browse, filter and compare AIBOMs in the web console, with telemetry charts. |
 
 ## How they fit together

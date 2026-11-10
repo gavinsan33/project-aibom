@@ -29,8 +29,12 @@ AIBOMs record what was declared and detected; they identify rather than verify. 
 | Repo | What it is |
 |------|------------|
 | [**aibom-webhook-service**](https://github.com/gavinsan33/aibom-webhook-service) | The admission webhook, watcher, and postprocess Job. This is where AIBOMs come from, and where you start. |
-| [**oc-aibom**](https://github.com/gavinsan33/oc-aibom) | `oc aibom`, a `kubectl`/`oc` plugin to list, filter, inspect, diff, and compare AIBOMs, and to verify their signatures. |
+| [**oc-aibom**](https://github.com/gavinsan33/oc-aibom) | `oc aibomrun`, a `kubectl`/`oc` plugin to list, filter, inspect, diff, and compare AIBOMs, and to verify their signatures. |
 | [**aibom-console-plugin**](https://github.com/gavinsan33/aibom-console-plugin) | An OpenShift web console plugin with list, detail, and compare views and telemetry charts. |
+
+## Related projects
+
+See [Related projects](https://gavinsan33.github.io/project-aibom/related-projects/) on the docs site for how this project relates to k8s-aibom and how to run both on one cluster.
 
 ## Cloning
 

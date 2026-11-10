@@ -7,7 +7,7 @@ How this site is built, and what the project depends on outside its repositories
 | Repository | Role |
 |------------|------|
 | [`aibom-webhook-service`](https://github.com/gavinsan33/aibom-webhook-service) | Webhook, watcher, postprocess Job and the two Helm charts |
-| [`oc-aibom`](https://github.com/gavinsan33/oc-aibom) | The `oc aibom` CLI and its krew manifest |
+| [`oc-aibom`](https://github.com/gavinsan33/oc-aibom) | The `oc aibomrun` CLI and its krew manifest |
 | [`aibom-console-plugin`](https://github.com/gavinsan33/aibom-console-plugin) | The OpenShift console plugin and its Helm chart |
 | [`project-aibom`](https://github.com/gavinsan33/project-aibom) | This repo: the three above as submodules, plus the combined docs site |
 
@@ -41,7 +41,7 @@ Everything is published under `quay.io/gsanders`.
 
 ## Releasing the CLI
 
-Push a tag matching `v*` to `oc-aibom`. The `release` workflow builds the archives with `make dist`, creates the GitHub release with checksums, then updates `plugins/aibom.yaml` (version and sha256 values) on `main`. The repo itself is the krew index:
+Push a tag matching `v*` to `oc-aibom`. The `release` workflow builds the archives with `make dist`, creates the GitHub release with checksums, then updates `plugins/aibomrun.yaml` (version and sha256 values) on `main`. The repo itself is the krew index:
 
 ```sh
 oc krew index add oc-aibom https://github.com/gavinsan33/oc-aibom.git
