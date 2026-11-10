@@ -41,7 +41,7 @@ Everything is published under `quay.io/gsanders`.
 
 ## Releasing the CLI
 
-Push a tag matching `v*` to `oc-aibom`. The `release` workflow builds the archives with `make dist`, creates the GitHub release with checksums, then updates `plugins/aibom.yaml` (version and sha256 values) on `main`. The repo itself is the krew index:
+Push a tag matching `v*` to `oc-aibom`. The `release` workflow builds the archives with `make dist`, creates the GitHub release with checksums, then updates `plugins/aibomrun.yaml` (version and sha256 values) on `main`. The repo itself is the krew index:
 
 ```sh
 oc krew index add oc-aibom https://github.com/gavinsan33/oc-aibom.git
