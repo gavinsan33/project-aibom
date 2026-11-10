@@ -34,10 +34,6 @@ For a diagram of how the pieces fit together, see [How they fit together](https:
 | [**oc-aibom**](https://github.com/gavinsan33/oc-aibom) | `oc aibomrun`, a `kubectl`/`oc` plugin to list, filter, inspect, diff, and compare AIBOMs, and to verify their signatures. |
 | [**aibom-console-plugin**](https://github.com/gavinsan33/aibom-console-plugin) | An OpenShift web console plugin with list, detail, and compare views and telemetry charts. |
 
-## Related projects
-
-See [Related projects](https://gavinsan33.github.io/project-aibom/related-projects/) on the docs site for how this project relates to k8s-aibom and how to run both on one cluster.
-
 ## Cloning
 
 To get all three repos in one checkout:
