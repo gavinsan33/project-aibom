@@ -24,6 +24,8 @@ An AIBOM captures:
 
 AIBOMs record what was declared and detected; they identify rather than verify. See the docs for the trust model and what the signatures do and do not guarantee.
 
+For a diagram of how the pieces fit together, see [How they fit together](https://gavinsan33.github.io/project-aibom/#how-they-fit-together) on the docs site.
+
 ## The projects
 
 | Repo | What it is |

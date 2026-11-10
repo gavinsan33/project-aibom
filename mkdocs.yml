@@ -59,7 +59,11 @@ markdown_extensions:
   - toc:
       permalink: true
   - pymdownx.highlight
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   # Pull files in from a project instead of copying them, e.g.
   #   --8<-- "aibom-webhook-service/examples/vllm-inference.yaml"
   - pymdownx.snippets:
