@@ -1,4 +1,16 @@
-# <img src="docs/assets/logo.svg" alt="" width="36"> Project AIBOM
+<p align="center">
+  <img src="docs/assets/logo.svg" alt="" width="128">
+</p>
+
+<h1 align="center">Project AIBOM</h1>
+
+<p align="center"><strong>A signed bill of materials for every AI workload run</strong></p>
+
+<p align="center">
+  <a href="https://gavinsan33.github.io/project-aibom/"><img src="https://img.shields.io/badge/docs-Project%20AIBOM-00897b?logo=materialformkdocs&logoColor=white" alt="Documentation"></a>
+  <a href="https://github.com/gavinsan33/project-aibom/actions/workflows/docs.yml"><img src="https://img.shields.io/github/actions/workflow/status/gavinsan33/project-aibom/docs.yml?branch=main&label=docs%20build" alt="Docs build"></a>
+  <a href="https://gavinsan33.github.io/project-aibom/aibom-webhook-service/"><img src="https://img.shields.io/badge/Kubernetes-1.29%2B-3f51b5?logo=kubernetes&logoColor=white" alt="Kubernetes 1.29+"></a>
+</p>
 
 An AI Bill of Materials (AIBOM) records what went into an AI workload run: the model, the dataset, the source code, the hardware, and how it performed. Project AIBOM collects that automatically on OpenShift and Kubernetes, with no changes to your workload manifests, and lets you browse and compare the results.
 
