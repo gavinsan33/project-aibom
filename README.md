@@ -1,6 +1,4 @@
-<img src="docs/assets/logo.svg" alt="Project AIBOM logo" width="80">
-
-# Project AIBOM
+# <img src="docs/assets/logo.svg" alt="" width="36"> Project AIBOM
 
 An AI Bill of Materials (AIBOM) records what went into an AI workload run: the model, the dataset, the source code, the hardware, and how it performed. Project AIBOM collects that automatically on OpenShift and Kubernetes, with no changes to your workload manifests, and lets you browse and compare the results.
 
