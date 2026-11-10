@@ -15,8 +15,12 @@ An AI Bill of Materials (AIBOM) records what went into an AI workload run: the m
 
 ## How they fit together
 
+1. Install the [webhook](aibom-webhook-service/user-guide/getting-started.md) and enable the namespaces whose workloads you want to track.
+2. Run Jobs as usual. Each one is instrumented without changes to its manifest, and an `AIBOM` is created when it finishes.
+3. Read the results with the [CLI](oc-aibom/install.md) or the [console plugin](aibom-console-plugin/guide/deployment.md). Both use your existing Kubernetes RBAC.
+
 ```mermaid
-flowchart LR
+flowchart TB
     api["Kubernetes API server"]
     prom[("Prometheus + DCGM")]
 
@@ -33,8 +37,9 @@ flowchart LR
             side["aibom-dataset-sidecar"]
         end
         cm[("Data ConfigMap")]
-        aibom[("AIBOM + AIBOMTelemetry")]
     end
+
+    aibom[("AIBOM + AIBOMTelemetry<br/>(workload namespace)")]
 
     cli["oc aibomrun"]
     console["Console plugin"]
@@ -51,7 +56,3 @@ flowchart LR
     aibom --> cli
     aibom --> console
 ```
-
-1. Install the [webhook](aibom-webhook-service/user-guide/getting-started.md) and enable the namespaces whose workloads you want to track.
-2. Run Jobs as usual. Each one is instrumented without changes to its manifest, and an `AIBOM` is created when it finishes.
-3. Read the results with the [CLI](oc-aibom/install.md) or the [console plugin](aibom-console-plugin/guide/deployment.md). Both use your existing Kubernetes RBAC.
