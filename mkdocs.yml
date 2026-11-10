@@ -67,7 +67,9 @@ markdown_extensions:
       check_paths: true
 
 nav:
-  - Home: index.md
+  - Home:
+      - Overview: index.md
+      - Related projects: related-projects.md
   - Webhook: '!include ./aibom-webhook-service/mkdocs.yml'
   - CLI: '!include ./oc-aibom/mkdocs.yml'
   - Console Plugin: '!include ./aibom-console-plugin/mkdocs.yml'

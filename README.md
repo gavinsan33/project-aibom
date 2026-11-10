@@ -34,7 +34,7 @@ AIBOMs record what was declared and detected; they identify rather than verify. 
 
 ## Related projects
 
-See [Related projects](https://gavinsan33.github.io/project-aibom/#related-projects) on the docs site for how this project relates to k8s-aibom and how to run both on one cluster.
+See [Related projects](https://gavinsan33.github.io/project-aibom/related-projects/) on the docs site for how this project relates to k8s-aibom and how to run both on one cluster.
 
 ## Cloning
 
