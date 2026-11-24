@@ -27,17 +27,21 @@ Each source repo also builds its own docs standalone on pull requests, so a brok
 |------|-------|----------|--------------|
 | `MONOREPO_DISPATCH_TOKEN` | Secret in the webhook, plugin and CLI repos | A fine-grained personal access token with Contents read/write on this repo, so the source repos can trigger the sync | Syncs fall back to the nightly run. The token has an expiry and belongs to one person. |
 | GitHub Pages source | This repo's Settings, Pages | Must be set to "GitHub Actions" | The deploy job fails. |
-| `QUAY_ROBOT_USERNAME`, `QUAY_ROBOT_TOKEN` | Secrets in the webhook and plugin repos | A push-only Quay robot account that publishes the Helm charts | Chart publishing fails. Images are unaffected, see below. |
+| `QUAY_ROBOT_USERNAME`, `QUAY_ROBOT_TOKEN` | Secrets in the webhook and plugin repos | A push-only Quay robot account that publishes the images and Helm charts. It needs push access to every image and chart repository below. | Image builds, chart publishing and releases fail. |
 | `RELEASE_APP_ID`, `RELEASE_APP_PRIVATE_KEY` | Secrets in the CLI repo | A GitHub App whose token the release workflow uses to push the krew manifest commit to `main` | CLI releases fail at the manifest step. |
-| Quay build triggers | Quay web UI, per image repository | Builds each image from `main` and pushes `:latest` and `:<commit sha>` | Images stop updating. These triggers are not defined in any repo. |
+| Fork of `openshift-helm-charts/charts` | The releaser's GitHub account | `just catalog-submit` opens the OpenShift Helm catalog pull requests from it | Catalog submissions fail. Pass `--fork=<owner/repo>` to use another fork. |
 
 ## Quay
 
-Everything is published under `quay.io/gsanders`.
+Everything is published under `quay.io/project-aibom`.
 
-- **Images:** `aibom-webhook-service`, `aibom-postprocess` and `aibom-console-plugin`. Each has a build trigger set up once in the Quay UI, pointing at the GitHub repository, branch `main` and the image's Dockerfile. The plugin's is `/Dockerfile`. Check the others in the Quay UI, since the trigger settings aren't in any repo.
-- **Charts:** `aibom-webhook`, `aibom-workload-namespace` and `aibom-console-plugin`, as OCI artifacts. The `chart-publish` workflow pushes them on pushes to `main` that touch chart paths. Each gets a mutable `<version>` tag and an immutable `<version>-<sha>` tag.
-- **Visibility:** the repositories must be public, or every installer needs pull credentials. Docs and install commands hard-code `quay.io/gsanders`.
+- **Images:** `aibom-webhook-service`, `aibom-postprocess` and `aibom-discovery` from the webhook repo, and `aibom-console-plugin` from the plugin repo. Each repo's `images` workflow rebuilds them on every push to `main` as `:latest` and `:<short sha>`. These workflows replaced Quay build triggers, so any triggers left in the Quay UI are unused.
+- **Charts:** `aibom-webhook` and `aibom-workload-namespace` from the webhook repo, and `aibom-console` from the plugin repo, as OCI artifacts. The `chart-publish` workflow pushes dev builds on pushes to `main` that touch chart paths, versioned `X.Y.<Z+1>-dev.<commits>.g<sha>` from the last tag, with images at `:latest`.
+- **Visibility:** the repositories must be public, or every installer needs pull credentials. Docs and install commands hard-code `quay.io/project-aibom`.
+
+## Releasing the webhook and plugin
+
+Push a `vX.Y.Z` tag to `aibom-webhook-service` or `aibom-console-plugin`. The `release` workflow builds the images as `:X.Y.Z`, publishes the charts with `version` and `appVersion` set to `X.Y.Z`, and attaches the chart tarballs to a GitHub release. For the webhook it also attaches `aibom-webhook-X.Y.Z-catalog.tgz`, the chart without its CRDs, and `aibom-crds.yaml`. A release fails rather than overwrite an existing image tag or chart version. Then run `just catalog-submit` in each repo to open the OpenShift Helm catalog pull requests, as a GitHub user listed in that repo's `catalog/**/OWNERS`.
 
 ## Releasing the CLI
 
@@ -53,6 +57,7 @@ Things that are tied to the current owner and need recreating or moving:
 
 - The three source repos and this one, which live under the `gavinsan33` account. Moving them changes `site_url`, every `repo_url`, the install commands in the docs, the submodule URLs in `.gitmodules`, the `notify-monorepo` target and the krew index URL.
 - The Quay organization and its robot account.
+- The fork of `openshift-helm-charts/charts` used by `just catalog-submit`, and the `users` in each `catalog/**/OWNERS` file. The catalog only accepts submissions from those GitHub users, so add the new owner there before their first submission.
 - `MONOREPO_DISPATCH_TOKEN`, replaced by a token from the new owner. A GitHub App would avoid the personal expiry.
 - The `oc-aibom` release GitHub App and its two secrets.
-- The Pages setting and the three Quay build triggers, neither of which is in version control.
+- The Pages setting, which isn't in version control.

@@ -21,8 +21,8 @@ An AI Bill of Materials (AIBOM) records what went into an AI workload run: the m
 
 ## What it does
 
-1. An admin installs the webhook and opts a namespace in with `aibom.io/enabled=true`.
-2. Users run Jobs, JobSets, PyTorchJobs, or any pod requesting GPUs as usual. The webhook injects a hardware-discovery init container, dataset and training-config detection hooks, and a signing sidecar.
+1. An admin installs the webhook and opts a namespace in by labeling it `aibom.io/enabled=true` and installing the `aibom-workload-namespace` chart there.
+2. Users run Jobs, JobSets, PyTorchJobs, RayJobs, or any pod requesting GPUs as usual. The webhook injects a hardware-discovery init container, dataset and training-config detection hooks, and a signing sidecar.
 3. When the workload finishes, a postprocess Job compiles everything into an immutable, signed `AIBOM` custom resource in the workload's namespace.
 4. Anyone with RBAC on `aiboms.aibom.io` can read, filter, and compare AIBOMs from the terminal or the OpenShift web console.
 
